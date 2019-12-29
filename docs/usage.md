@@ -94,7 +94,7 @@ user.prepare('/path/to/your/yh_client.json') // 配置文件路径
 需要先手动登陆客户端到交易窗口，然后运用下面的代码连接交易窗口
 
 ```python
-user.connect(r'客户端xiadan.exe路径') # 类似 r'C:\htzqzyb2\xiadan.exe'
+user.prepare(r'客户端xiadan.exe路径') # 类似 r'C:\htzqzyb2\xiadan.exe'
 ```
 
 ## 某些同花顺客户端不允许拷贝 `Grid` 数据导致无法获取持仓等问题的解决办法

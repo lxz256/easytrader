@@ -48,7 +48,7 @@ class IClientTrader(abc.ABC):
 
 class ClientTrader(IClientTrader):
     # The strategy to use for getting grid data
-    grid_strategy: Type[grid_strategies.IGridStrategy] = grid_strategies.Copy
+    grid_strategy: Type[grid_strategies.IGridStrategy] = grid_strategies.Xls
 
     def __init__(self):
         self._config = client.create(self.broker_type)
@@ -67,7 +67,7 @@ class ClientTrader(IClientTrader):
     def config(self):
         return self._config
 
-    def connect(self, exe_path=None, **kwargs):
+    def prepare(self, exe_path=None, **kwargs):
         """
         直接连接登陆后的客户端
         :param exe_path: 客户端路径类似 r'C:\\htzqzyb2\\xiadan.exe', 默认 r'C:\\htzqzyb2\\xiadan.exe'

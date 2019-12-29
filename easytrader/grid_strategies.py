@@ -87,7 +87,7 @@ class Xls(BaseStrategy):
         grid.type_keys("^s")
         self._trader.wait(1)
 
-        temp_path = tempfile.mktemp(suffix=".csv")
+        temp_path = tempfile.mktemp(suffix=".xls")
         self._trader.app.top_window().type_keys(self.normalize_path(temp_path))
 
         # Wait until file save complete
