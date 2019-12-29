@@ -42,6 +42,14 @@ def use(broker, debug=True, **kwargs):
         from .gj_clienttrader import GJClientTrader
 
         return GJClientTrader()
+    if broker.lower() in ["hton_client", "海通客户端"]:
+        from .ths_clienttrader import HTonClientTrader
+
+        return HTonClientTrader()
+    if broker.lower() in ["gf_client", "广发客户端"]:
+        from .ths_clienttrader import GFClientTrader
+
+        return GFClientTrader()
     if broker.lower() in ["ths", "同花顺客户端"]:
         from .clienttrader import ClientTrader
 

@@ -8,6 +8,10 @@ def create(broker):
         return GJ
     if broker == "ths":
         return CommonConfig
+    if broker == 'gf':
+        return GF
+    if broker == 'hton':
+        return HTon
     raise NotImplementedError
 
 
@@ -129,3 +133,12 @@ class GJ(CommonConfig):
     }
 
     AUTO_IPO_MENU_PATH = ["新股申购", "新股批量申购"]
+
+
+class GF(CommonConfig):
+    DEFAULT_EXE_PATH = "C:\\gfzqrzrq\\xiadan.exe"
+
+
+class HTon(CommonConfig):
+    DEFAULT_EXE_PATH = "C:\\海通证券委托\\xiadan.exe"
+
