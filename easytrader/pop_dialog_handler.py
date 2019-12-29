@@ -13,11 +13,13 @@ class PopDialogHandler:
     def handle(self, title):
         if any(s in title for s in {"提示信息", "委托确认", "网上交易用户协议"}):
             self._submit_by_shortcut()
+            time.sleep(0.05)
             return None
 
         if "提示" in title:
             content = self._extract_content()
             self._submit_by_click()
+            time.sleep(0.05)
             return {"message": content}
 
         content = self._extract_content()
@@ -44,16 +46,19 @@ class TradePopDialogHandler(PopDialogHandler):
     def handle(self, title) -> Optional[dict]:
         if title == "委托确认":
             self._submit_by_shortcut()
+            time.sleep(0.05)
             return None
 
         if title == "提示信息":
             content = self._extract_content()
             if "超出涨跌停" in content:
                 self._submit_by_shortcut()
+                time.sleep(0.05)
                 return None
 
             if "委托价格的小数价格应为" in content:
                 self._submit_by_shortcut()
+                time.sleep(0.05)
                 return None
 
             return None
@@ -63,6 +68,7 @@ class TradePopDialogHandler(PopDialogHandler):
             if "成功" in content:
                 entrust_no = self._extract_entrust_id(content)
                 self._submit_by_click()
+                time.sleep(0.05)
                 return {"entrust_no": entrust_no}
 
             self._submit_by_click()
