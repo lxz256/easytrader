@@ -91,12 +91,12 @@ class Xls(BaseStrategy):
         self._trader.app.top_window().type_keys(self.normalize_path(temp_path))
 
         # Wait until file save complete
-        self._trader.wait(0.3)
+        self._trader.wait(1)
 
         # alt+s保存，alt+y替换已存在的文件
         self._trader.app.top_window().type_keys("%{s}%{y}")
         # Wait until file save complete otherwise pandas can not find file
-        self._trader.wait(0.2)
+        self._trader.wait(1)
         return self._format_grid_data(temp_path)
 
     def normalize_path(self, temp_path: str) -> str:
