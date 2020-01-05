@@ -138,7 +138,22 @@ class GJ(CommonConfig):
 class GF(CommonConfig):
     DEFAULT_EXE_PATH = "C:\\gfzqrzrq\\xiadan.exe"
 
+    BALANCE_CONTROL_ID_GROUP = {
+        "资金余额": 1012,
+        "可用金额": 1016,
+        "可取金额": 1017,
+        "股票市值": 1014,
+        "总资产": 1015,
+    }
+
 
 class HTon(CommonConfig):
     DEFAULT_EXE_PATH = "C:\\海通证券委托\\xiadan.exe"
 
+    BALANCE_CONTROL_ID_GROUP = {
+        "资金余额": 1012,
+        "可用金额": 1016,
+        "可取金额": 1017,
+        # "股票市值": 1014,
+        "总资产": 1015,
+    }
