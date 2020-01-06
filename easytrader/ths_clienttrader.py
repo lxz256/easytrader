@@ -6,7 +6,7 @@ import time
 import pywinauto
 import pywinauto.clipboard
 
-from . import clienttrader, helpers
+from easytrader import clienttrader, helpers
 
 
 class HTonClientTrader(clienttrader.BaseLoginClientTrader):
@@ -47,7 +47,7 @@ class HTonClientTrader(clienttrader.BaseLoginClientTrader):
 
             self._app.top_window().Edit3.type_keys(comm_password)
 
-            self._app.top_window().button0.click()
+            self._app.top_window()["连接最快站点"].click()
 
             # detect login is success or not
             self._app.top_window().wait_not("exists", 30)
