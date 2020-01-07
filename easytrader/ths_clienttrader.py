@@ -6,7 +6,7 @@ import time
 import pywinauto
 import pywinauto.clipboard
 
-from easytrader import clienttrader, helpers
+from . import clienttrader, helpers
 
 
 class HTonClientTrader(clienttrader.BaseLoginClientTrader):
