@@ -225,7 +225,7 @@ class ClientTrader(IClientTrader):
         if len(stock_list) == 0:
             return {"message": "今日无新股"}
         invalid_list_idx = [
-            i for i, v in enumerate(stock_list) if v["可申购数量"] <= 0 or (v["新股代码"].startwith('787') and not kcb_flag)
+            i for i, v in enumerate(stock_list) if v["可申购数量"] <= 0 or (v["新股代码"]//1000 == 787 and not kcb_flag)
         ]  # 增加flag，是否打科创板
 
         if len(stock_list) == len(invalid_list_idx):
