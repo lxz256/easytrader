@@ -85,7 +85,7 @@ class Xls(BaseStrategy):
 
         # ctrl+s 保存 grid 内容为 xls 文件
         grid.type_keys("^s")
-        self._trader.wait(2)
+        self._trader.wait(2.5)
 
         temp_path = tempfile.mktemp(suffix=".xls")
         self._trader.app.top_window().type_keys(self.normalize_path(temp_path))
