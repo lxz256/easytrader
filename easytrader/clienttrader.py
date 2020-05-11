@@ -268,14 +268,14 @@ class ClientTrader(IClientTrader):
                 return
         raise TypeError("不支持对应的市价类型: {}".format(ttype))
 
-    def auto_ipo(self):
+    def auto_ipo(self, kcb_flag=0):
         self._switch_left_menus(self._config.AUTO_IPO_MENU_PATH)
 
         stock_list = self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
 
         if len(stock_list) == 0:
             return {"message": "今日无新股"}
-        invalid_list_idx = [i for i, v in enumerate(stock_list) if v[self.config.AUTO_IPO_NUMBER] <= 0]
+        invalid_list_idx = [i for i, v in enumerate(stock_list) if v[self.config.AUTO_IPO_NUMBER] <= 0 or (v["新股代码"]//1000 == 787 and not kcb_flag)]
 
         if len(stock_list) == len(invalid_list_idx):
             return {"message": "没有发现可以申购的新股"}
