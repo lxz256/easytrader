@@ -179,7 +179,7 @@ class Xls(BaseStrategy):
         # ctrl+s 保存 grid 内容为 xls 文件
         self._set_foreground(grid)  # setFocus buggy, instead of SetForegroundWindow
         grid.type_keys("^s", set_foreground=False)
-        count = 10
+        count = 30
         while count > 0:
             if self._trader.is_exist_pop_dialog():
                 break
