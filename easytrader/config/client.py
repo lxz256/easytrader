@@ -10,6 +10,8 @@ def create(broker):
         return CommonConfig
     if broker == "wk":
         return WK
+    if broker == "htzq":
+        return HTZQ
     raise NotImplementedError
 
 
@@ -66,6 +68,7 @@ class CommonConfig:
     AUTO_IPO_SELECT_ALL_BUTTON_CONTROL_ID = 1098
     AUTO_IPO_BUTTON_CONTROL_ID = 1006
     AUTO_IPO_MENU_PATH = ["新股申购", "批量新股申购"]
+    AUTO_IPO_NUMBER = '申购数量'
 
 
 class YH(CommonConfig):
@@ -135,3 +138,16 @@ class GJ(CommonConfig):
 
 class WK(HT):
     pass
+
+
+class HTZQ(CommonConfig):
+    DEFAULT_EXE_PATH = r"c:\\海通证券委托\\xiadan.exe"
+
+    BALANCE_CONTROL_ID_GROUP = {
+        "资金余额": 1012,
+        "可用金额": 1016,
+        "可取金额": 1017,
+        "总资产": 1015,
+    }
+
+    AUTO_IPO_NUMBER = '可申购数量'
