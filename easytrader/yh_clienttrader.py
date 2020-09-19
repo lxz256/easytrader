@@ -108,13 +108,13 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
         self._switch_left_menus(self._config.BALANCE_MENU_PATH)
         return self._get_grid_data(self._config.BALANCE_GRID_CONTROL_ID)
 
-    def auto_ipo(self):
+    def auto_ipo(self, kcb_flag=0):
         self._switch_left_menus(self._config.AUTO_IPO_MENU_PATH)
         stock_list = self._get_grid_data(self._config.COMMON_GRID_CONTROL_ID)
         if len(stock_list) == 0:
             return {"message": "今日无新股"}
         invalid_list_idx = [
-            i for i, v in enumerate(stock_list) if v["申购数量"] <= 0
+            i for i, v in enumerate(stock_list) if v["申购数量"] <= 0 or (v["新股代码"]//1000 == 787 and not kcb_flag)
         ]
         if len(stock_list) == len(invalid_list_idx):
             return {"message": "没有发现可以申购的新股"}
