@@ -113,7 +113,6 @@ class TradePopDialogHandler(PopDialogHandler):
         # 银河基金信息披露和风险确认
         if title == "基金信息披露":
             if self._app.top_window().child_window(control_id=1504, class_name='Button').exists():
-                # print(self._app.top_window()['基金信息披露Shell DocObject View']._ctrl_identifiers())
                 self._app.top_window()['基金信息披露Shell DocObject View'].click()
                 self._app.top_window().type_keys('{TAB}')
                 self._app.top_window().type_keys("{ENTER}")
@@ -123,7 +122,7 @@ class TradePopDialogHandler(PopDialogHandler):
                 #         break
                 #     except RuntimeError:
                 #         pass
-                time.sleep(0.3)
+                time.sleep(0.5)
                 self._app.top_window().type_keys("{ESC}")
                 time.sleep(0.1)
                 self._app.top_window().child_window(control_id=1504, class_name='Button').click()
