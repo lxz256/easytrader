@@ -492,6 +492,24 @@ class ClientTrader(IClientTrader):
                 return result
         return {"message": "success"}
 
+    @perf_clock
+    def purchase(self, security, amount):
+        """
+        市价交易
+        :param security: 六位证券代码
+        :param amount: 申购金额
+        :return: {'entrust_no': '委托单号'}
+        """
+        self._switch_left_menus(["场内基金", "申购"])
+
+        self._type_edit_control_keys(self._config.TRADE_SECURITY_CONTROL_ID, security)
+        self._type_edit_control_keys(self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount)))
+        self._submit_trade()
+
+        return self._handle_pop_dialogs(
+            handler_class=pop_dialog_handler.TradePopDialogHandler
+        )
+
 
 class BaseLoginClientTrader(ClientTrader):
     @abc.abstractmethod

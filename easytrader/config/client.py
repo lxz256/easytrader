@@ -72,9 +72,11 @@ class CommonConfig:
     AUTO_IPO_MENU_PATH = ["新股申购", "批量新股申购"]
     AUTO_IPO_NUMBER = '申购数量'
 
+    ACCOUNT_CONTROL_ID = 1004
+    AGREE_CHECKBOX = 1504
 
 class YH(CommonConfig):
-    DEFAULT_EXE_PATH = r"C:\双子星-中国银河证券\Binarystar.exe"
+    DEFAULT_EXE_PATH = r"C:\双子星金融终端独立交易-中国银河证券\xiadan.exe"
 
     BALANCE_GRID_CONTROL_ID = 1308
 

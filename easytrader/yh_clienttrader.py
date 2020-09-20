@@ -4,8 +4,9 @@ import tempfile
 
 import pywinauto
 
-from easytrader import clienttrader, grid_strategies
+from easytrader import clienttrader, grid_strategies, pop_dialog_handler
 from easytrader.utils.captcha import recognize_verify_code
+from easytrader.utils.perf import perf_clock
 
 
 class YHClientTrader(clienttrader.BaseLoginClientTrader):
@@ -55,7 +56,10 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
                 self._app.top_window().Edit3.type_keys(
                     self._handle_verify_code(is_xiadan)
                 )
-                self._app.top_window()["确定" if is_xiadan else "登录"].click()
+                if is_xiadan:
+                    self._app.top_window().Button0.click()
+                else:
+                    self._app.top_window()["委托登录"].click()
 
                 # detect login is success or not
                 try:
@@ -124,3 +128,21 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
         self._click(self._config.AUTO_IPO_BUTTON_CONTROL_ID)
         self.wait(0.1)
         return self._handle_pop_dialogs()
+
+    @perf_clock
+    def purchase(self, security, amount):
+        """
+        市价交易
+        :param security: 六位证券代码
+        :param amount: 申购金额
+        :return: {'entrust_no': '委托单号'}
+        """
+        self._switch_left_menus(["场内基金", "申购"])
+
+        self._type_edit_control_keys(self._config.TRADE_SECURITY_CONTROL_ID, security)
+        self._type_edit_control_keys(self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount)))
+        self._submit_trade()
+
+        return self._handle_pop_dialogs(
+            handler_class=pop_dialog_handler.TradePopDialogHandler
+        )
