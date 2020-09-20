@@ -90,7 +90,7 @@ class TradePopDialogHandler(PopDialogHandler):
                 time.sleep(0.1)
                 return None
 
-            # 银河申购static取不到值，暂时处理如下
+            # 银河申购第一个窗口提示信息的Static取不到值，暂时处理如下
             if "提示信息" in content:
                 self._submit_by_shortcut()
                 time.sleep(0.1)
@@ -112,37 +112,38 @@ class TradePopDialogHandler(PopDialogHandler):
 
         # 银河基金信息披露和风险确认
         if title == "基金信息披露":
-            if self._app.top_window().child_window(control_id=1504, class_name='Button').exists():
-                self._app.top_window()['基金信息披露Shell DocObject View'].click()
-                self._app.top_window().type_keys('{TAB}')
-                self._app.top_window().type_keys("{ENTER}")
-                # while True:
-                #     try:
-                #         self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=10, retry_interval=0.1)  # 保存
-                #         break
-                #     except RuntimeError:
-                #         pass
-                time.sleep(0.5)
-                self._app.top_window().type_keys("{ESC}")
-                time.sleep(0.1)
-                self._app.top_window().child_window(control_id=1504, class_name='Button').click()
-                self._app.top_window()["确定"].click()
-                time.sleep(0.1)
-                self._app.top_window()["确认"].click()
-                time.sleep(0.1)
-                return None
+            self._app.top_window()['基金信息披露Shell DocObject View'].click()
+            self._app.top_window().type_keys('{TAB}')
+            time.sleep(0.1)
+            self._app.top_window().type_keys("{ENTER}")
+            # while True:
+            #     try:
+            #         self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=10, retry_interval=0.1)  # 保存
+            #         break
+            #     except RuntimeError:
+            #         pass
+            time.sleep(0.5)
+            self._app.top_window().type_keys("{ESC}")
+            time.sleep(0.2)
+            self._app.top_window().child_window(control_id=1504, class_name='Button').click()
+            time.sleep(0.2)
+            self._app.top_window()["确定"].click()
+            time.sleep(0.2)
+            self._app.top_window()["确认"].click()
+            time.sleep(0.2)
+            return None
         # 银河风险告知
         if title == "公募证券投资基金投资风险告知":
             self._app.top_window().child_window(control_id=1504, class_name='Button').click()
-            time.sleep(0.1)
+            time.sleep(0.2)
             self._app.top_window()["确定"].click()
-            time.sleep(0.1)
+            time.sleep(0.2)
             return None
 
         # 银河适当性匹配
         if title == "适当性匹配结果确认书":
             self._app.top_window()["确定"].click()
-            time.sleep(0.1)
+            time.sleep(0.2)
             return None
 
         self._close()
