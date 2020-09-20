@@ -489,7 +489,7 @@ class ClientTrader(IClientTrader):
                 return {"message": "success"}
 
             result = handler.handle(title)
-            time.sleep(0.1)
+            time.sleep(0.2)
             if result:
                 return result
         return {"message": "success"}
