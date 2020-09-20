@@ -91,7 +91,7 @@ class TradePopDialogHandler(PopDialogHandler):
                 return None
 
             # 银河申购第一个窗口提示信息的Static取不到值，暂时处理如下
-            if "提示信息" in content:
+            if "提示信息" in content or content == '':
                 self._submit_by_shortcut()
                 time.sleep(0.1)
                 return None
