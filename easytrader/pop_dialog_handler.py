@@ -112,13 +112,14 @@ class TradePopDialogHandler(PopDialogHandler):
             self._app.top_window().type_keys('{TAB}')
             time.sleep(0.1)
             self._app.top_window().type_keys("{ENTER}")
-            # while True:
-            #     try:
-            #         self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=10, retry_interval=0.1)  # 保存
-            #         break
-            #     except RuntimeError:
-            #         pass
-            time.sleep(0.5)
+            while True:
+                try:
+                    self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=0.1, retry_interval=0.1)  # 保存
+                    break
+                except RuntimeError:
+                    print('failfailfailfailfailfailfailfailfailfailfailfail')
+                    pass
+            # time.sleep(0.5)
             self._app.top_window().type_keys("{ESC}")
             time.sleep(0.2)
             self._app.top_window().child_window(control_id=1504, class_name='Button').click()
