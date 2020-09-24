@@ -110,7 +110,7 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
     @property
     def balance(self):
         self._switch_left_menus(self._config.BALANCE_MENU_PATH)
-        return self._get_grid_data(self._config.BALANCE_GRID_CONTROL_ID)
+        return self._get_grid_data(self._config.BALANCE_GRID_CONTROL_ID)[0]
 
     def auto_ipo(self, kcb_flag=0):
         self._switch_left_menus(self._config.AUTO_IPO_MENU_PATH)
