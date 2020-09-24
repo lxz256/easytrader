@@ -437,7 +437,7 @@ class ClientTrader(IClientTrader):
             item.collapse()
 
     @perf_clock
-    def _switch_left_menus(self, path, sleep=0.2):
+    def _switch_left_menus(self, path, sleep=0.5):
         self._get_left_menus_handle().get_item(path).click()
         self.wait(sleep)
 
