@@ -8,6 +8,7 @@ import pywinauto
 from easytrader import exceptions
 from easytrader.utils.perf import perf_clock
 from easytrader.utils.win_gui import SetForegroundWindow, ShowWindow
+from easytrader import logger
 
 
 class PopDialogHandler:
@@ -112,13 +113,15 @@ class TradePopDialogHandler(PopDialogHandler):
             self._app.top_window().type_keys('{TAB}')
             time.sleep(0.1)
             self._app.top_window().type_keys("{ENTER}")
-            while True:
+
+            retry = 20
+            while retry:
                 try:
-                    self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=0.1, retry_interval=0.1)  # 保存
+                    self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=0.3, retry_interval=0.1)  # 保存
                     break
                 except RuntimeError:
-                    print('failfailfailfailfailfailfailfailfailfailfailfail')
-                    pass
+                    retry -= 1
+                    logger.debug('retry%s con not find save button' % (20 - retry))
             # time.sleep(0.5)
             self._app.top_window().type_keys("{ESC}")
             time.sleep(0.2)
