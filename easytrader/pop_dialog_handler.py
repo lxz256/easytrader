@@ -6,9 +6,9 @@ from typing import Optional
 import pywinauto
 
 from easytrader import exceptions
+from easytrader import logger
 from easytrader.utils.perf import perf_clock
 from easytrader.utils.win_gui import SetForegroundWindow, ShowWindow
-from easytrader import logger
 
 
 class PopDialogHandler:
@@ -92,6 +92,19 @@ class TradePopDialogHandler(PopDialogHandler):
             # 银河申购第一个窗口提示信息的Static取不到值，暂时处理如下
             if "提示信息" in content or content == '':
                 self._submit_by_shortcut()
+
+                # 银河第一个窗口点确认后，弹“基金信息披露”有些卡，在此等待弹窗
+                retry = 20
+                while retry:
+                    try:
+                        self._app.top_window().child_window(control_id=1365).wait("ready",
+                                                                                  timeout=0.5,
+                                                                                  retry_interval=0.2)
+                        break
+                    except RuntimeError:
+                        retry -= 1
+                        logger.info('con not find window 基金信息披露, retrying...')
+
                 return None
 
             return None
@@ -117,11 +130,12 @@ class TradePopDialogHandler(PopDialogHandler):
             retry = 20
             while retry:
                 try:
-                    self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=0.3, retry_interval=0.1)  # 保存
+                    self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=0.5,
+                                                                                                   retry_interval=0.2)  # 保存
                     break
                 except RuntimeError:
                     retry -= 1
-                    logger.debug('retry%s con not find save button' % (20 - retry))
+                    logger.info('con not find save button, retry%s ' % (20 - retry))
             # time.sleep(0.5)
             self._app.top_window().type_keys("{ESC}")
             time.sleep(0.2)
