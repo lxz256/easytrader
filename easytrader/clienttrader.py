@@ -480,7 +480,6 @@ class ClientTrader(IClientTrader):
     @perf_clock
     def _handle_pop_dialogs(self, handler_class=pop_dialog_handler.PopDialogHandler):
         handler = handler_class(self._app)
-        time.sleep(0.5)
 
         while self.is_exist_pop_dialog():
             try:
@@ -489,7 +488,6 @@ class ClientTrader(IClientTrader):
                 return {"message": "success"}
 
             result = handler.handle(title)
-            time.sleep(0.2)
             if result:
                 return result
         return {"message": "success"}
