@@ -143,6 +143,7 @@ class TradePopDialogHandler(PopDialogHandler):
             time.sleep(0.1)
             self._app.top_window()["确定"].click()
 
+            # 风险确认弹窗，“确认”而非“确定”，字样特殊，放在这一起处理
             time.sleep(1)
             self._app.top_window()["确认"].click()
             return None
