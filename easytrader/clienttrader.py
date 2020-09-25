@@ -305,7 +305,7 @@ class ClientTrader(IClientTrader):
 
     @perf_clock
     def is_exist_pop_dialog(self):
-        self.wait(0.5)  # wait dialog display
+        self.wait(1)  # wait dialog display
         try:
             return (
                 self._main.wrapper_object() != self._app.top_window().wrapper_object()
