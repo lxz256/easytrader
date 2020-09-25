@@ -142,7 +142,8 @@ class TradePopDialogHandler(PopDialogHandler):
             self._app.top_window().child_window(control_id=1504, class_name='Button').click()
             time.sleep(0.1)
             self._app.top_window()["确定"].click()
-            time.sleep(0.2)
+
+            time.sleep(1)
             self._app.top_window()["确认"].click()
             return None
         # 银河风险告知
