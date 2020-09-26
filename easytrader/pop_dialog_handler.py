@@ -99,19 +99,6 @@ class TradePopDialogHandler(PopDialogHandler):
             # 银河申购第一个窗口提示信息的Static取不到值，暂时处理如下
             if "提示信息" in content or content == '':
                 self._submit_by_shortcut()
-
-                # # 银河第一个窗口点确认后，弹“基金信息披露”有些卡，在此等待弹窗
-                # retry = 20
-                # while retry:
-                #     try:
-                #         self._app.top_window().child_window(control_id=1365).wait("ready",
-                #                                                                   timeout=0.5,
-                #                                                                   retry_interval=0.2)
-                #         break
-                #     except RuntimeError:
-                #         retry -= 1
-                #         logger.info('con not find window 基金信息披露, retrying...')
-
                 return None
 
             return None
@@ -148,6 +135,7 @@ class TradePopDialogHandler(PopDialogHandler):
             self._app.top_window().type_keys("{ESC}")
             time.sleep(0.5)
             self._submit_by_click()
+            return None
 
         # 银河风险确认弹窗
         if title == "风险确认":
