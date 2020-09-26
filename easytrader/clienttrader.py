@@ -312,7 +312,7 @@ class ClientTrader(IClientTrader):
         while retry and not len(self._app.windows(class_name="#32770", visible_only=True)):
             retry -= 1
             self.wait(0.5)
-            logger.info('wait for pop_dialog, retrying...')
+            logging.info('wait for pop_dialog, retrying...')
         return True if retry else False
         # logger.info('self._main.wrapper_object()=%s self._app.top_window().wrapper_object()=%s' % (self._main.wrapper_object(), self._app.top_window().wrapper_object()))
         #     return (
@@ -336,14 +336,13 @@ class ClientTrader(IClientTrader):
         self._app.kill()
 
     def _close_prompt_windows(self):
-        self.wait(1)
+        self.wait(0.2)
         for window in self._app.windows(class_name="#32770", visible_only=True):
             title = window.window_text()
             if title != self._config.TITLE:
                 logging.info("close " + title)
                 window.close()
                 self.wait(0.2)
-        self.wait(1)
 
     def close_pormpt_window_no_wait(self):
         for window in self._app.windows(class_name="#32770"):
