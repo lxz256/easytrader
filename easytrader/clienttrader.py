@@ -305,18 +305,26 @@ class ClientTrader(IClientTrader):
 
     @perf_clock
     def is_exist_pop_dialog(self):
-        self.wait(1)  # wait dialog display
-        try:
-            return (
-                self._main.wrapper_object() != self._app.top_window().wrapper_object()
-            )
-        except (
-            findwindows.ElementNotFoundError,
-            timings.TimeoutError,
-            RuntimeError,
-        ) as ex:
-            logger.exception("check pop dialog timeout")
-            return False
+        self.wait(0.2)  # wait pre_dialog disappear
+
+        # try:
+        retry = 20
+        while retry and not len(self._app.windows(class_name="#32770", visible_only=True)):
+            retry -= 1
+            self.wait(0.5)
+            logger.info('wait for pop_dialog, retrying...')
+        return True if retry else False
+        # logger.info('self._main.wrapper_object()=%s self._app.top_window().wrapper_object()=%s' % (self._main.wrapper_object(), self._app.top_window().wrapper_object()))
+        #     return (
+        #         self._main.wrapper_object() != self._app.top_window().wrapper_object()
+        #     )
+        # except (
+        #     findwindows.ElementNotFoundError,
+        #     timings.TimeoutError,
+        #     RuntimeError,
+        # ) as ex:
+        #     logging.exception("check pop dialog timeout")
+        #     return False
 
     def _run_exe_path(self, exe_path):
         return os.path.join(os.path.dirname(exe_path), "xiadan.exe")
@@ -485,12 +493,12 @@ class ClientTrader(IClientTrader):
             try:
                 title = self._get_pop_dialog_title()
             except pywinauto.findwindows.ElementNotFoundError:
-                return {"message": "success"}
+                return {"message": 'top_window：%s，存在pop_dialog但找不到pop_dialog_title' % self._app.top_window}
 
             result = handler.handle(title)
             if result:
                 return result
-        return {"message": "success"}
+        return {"message": "top_window：%s，不存在pop_dialog" % self._app.top_window}
 
 
 class BaseLoginClientTrader(ClientTrader):
