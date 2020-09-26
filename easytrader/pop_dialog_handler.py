@@ -51,7 +51,10 @@ class PopDialogHandler:
         # 复选框
         if self._app.top_window().child_window(control_id=1504, class_name='Button').exists():
             self._app.top_window().child_window(control_id=1504, class_name='Button').click()
-        if self._app.top_window()["确定"].exists():
+
+        if self._app.top_window()['是(&Y)'].exists():
+            self._app.top_window()['是(&Y)'].click()
+        elif self._app.top_window()["确定"].exists():
             self._app.top_window()["确定"].click()
         else:
             self._app.top_window()["确认"].click()
@@ -93,7 +96,7 @@ class TradePopDialogHandler(PopDialogHandler):
 
             # 银河申购第一个窗口提示信息的Static取不到值，暂时处理如下
             if "提示信息" in content or content == '':
-                self._submit_by_shortcut()
+                self._submit_by_click()
                 return None
 
             return None
