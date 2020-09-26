@@ -47,12 +47,19 @@ class PopDialogHandler:
         return re.search(r"\d+", content).group()
 
     def _submit_by_click(self):
-        try:
+        self._set_foreground(self._app.top_window())
+        # 复选框
+        if self._app.top_window().child_window(control_id=1504, class_name='Button').exists():
+            self._app.top_window().child_window(control_id=1504, class_name='Button').click()
+        # 点击确定或确认
+        if self._app.top_window()["确定"].exists():
             self._app.top_window()["确定"].click()
-        except Exception as ex:
-            self._app.Window_(
-                best_match="Dialog", top_level_only=True
-            ).ChildWindow(best_match="确定").click()
+        else:
+            self._app.top_window()["确认"].click()
+        # except Exception as ex:
+        #     self._app.window(
+        #         best_match="Dialog", top_level_only=True
+        #     ).child_window(best_match="确定").click()
 
     def _submit_by_shortcut(self):
         self._set_foreground(self._app.top_window())
@@ -93,17 +100,17 @@ class TradePopDialogHandler(PopDialogHandler):
             if "提示信息" in content or content == '':
                 self._submit_by_shortcut()
 
-                # 银河第一个窗口点确认后，弹“基金信息披露”有些卡，在此等待弹窗
-                retry = 20
-                while retry:
-                    try:
-                        self._app.top_window().child_window(control_id=1365).wait("ready",
-                                                                                  timeout=0.5,
-                                                                                  retry_interval=0.2)
-                        break
-                    except RuntimeError:
-                        retry -= 1
-                        logger.info('con not find window 基金信息披露, retrying...')
+                # # 银河第一个窗口点确认后，弹“基金信息披露”有些卡，在此等待弹窗
+                # retry = 20
+                # while retry:
+                #     try:
+                #         self._app.top_window().child_window(control_id=1365).wait("ready",
+                #                                                                   timeout=0.5,
+                #                                                                   retry_interval=0.2)
+                #         break
+                #     except RuntimeError:
+                #         retry -= 1
+                #         logger.info('con not find window 基金信息披露, retrying...')
 
                 return None
 
@@ -123,9 +130,9 @@ class TradePopDialogHandler(PopDialogHandler):
         # 银河基金信息披露和风险确认
         if title == "基金信息披露":
             self._app.top_window()['基金信息披露Shell DocObject View'].click()
-            time.sleep(0.1)
+            time.sleep(0.2)
             self._app.top_window().type_keys('{TAB}')
-            time.sleep(0.1)
+            time.sleep(0.2)
             self._app.top_window().type_keys("{ENTER}")
 
             retry = 20
@@ -137,27 +144,22 @@ class TradePopDialogHandler(PopDialogHandler):
                 except RuntimeError:
                     retry -= 1
                     logger.info('con not find save button, retry%s ' % (20 - retry))
-            # time.sleep(0.5)
-            self._app.top_window().type_keys("{ESC}")
-            time.sleep(0.2)
-            self._app.top_window().child_window(control_id=1504, class_name='Button').click()
-            time.sleep(0.1)
-            self._app.top_window()["确定"].click()
 
-            # 风险确认弹窗，“确认”而非“确定”，字样特殊，放在这一起处理
-            time.sleep(1)
-            self._app.top_window()["确认"].click()
+            self._app.top_window().type_keys("{ESC}")
+            time.sleep(0.5)
+            self._submit_by_click()
+
+        # 银河风险确认弹窗
+        if title == "风险确认":
+            self._submit_by_click()
             return None
         # 银河风险告知
         if title == "公募证券投资基金投资风险告知":
-            self._app.top_window().child_window(control_id=1504, class_name='Button').click()
-            time.sleep(0.1)
-            self._app.top_window()["确定"].click()
+            self._submit_by_click()
             return None
-
         # 银河适当性匹配
         if title == "适当性匹配结果确认书":
-            self._app.top_window()["确定"].click()
+            self._submit_by_click()
             return None
 
         self._close()
