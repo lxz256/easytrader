@@ -13,9 +13,9 @@ import easytrader
 user = easytrader.use('yh_client')
 user.prepare(user='213600010660', password='126259')
 time.sleep(1)
-print(user._app.top_window().child_window(control_id=1504, class_name='Button').window_text())
-
-# user.purchase(security='162411', amount=100)
+# print(user._app.top_window().child_window(control_id=1504, class_name='Button').window_text())
+#
+user.purchase(security='162411', amount=100)
 
 # # todo 工作日检查
 # # todo 溢价检查
