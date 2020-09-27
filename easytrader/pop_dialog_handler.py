@@ -71,7 +71,7 @@ class TradePopDialogHandler(PopDialogHandler):
     @perf_clock
     def handle(self, title) -> Optional[dict]:
         content = self._extract_content()
-        logger.debug('handling title:%s content:%s' % title, content)
+        logger.debug('handling title:%s content:%s' % (title, content))
 
         if title == "委托确认":
             self._submit_by_shortcut()
@@ -127,10 +127,11 @@ class TradePopDialogHandler(PopDialogHandler):
                     break
                 except RuntimeError:
                     retry -= 1
-                    logger.info('con not find save button, retry%s ' % (20 - retry))
+                    logger.info('con not find save button, retry%s ' % (10 - retry))
 
             self._app.top_window().type_keys("{ESC}")
-            time.sleep(0.5)
+            self._app.top_window()['保存(&S)'].wait_not('ready', 5)
+
             self._select_checkbox()
             time.sleep(0.1)
             self._submit_by_click()
