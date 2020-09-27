@@ -305,7 +305,7 @@ class ClientTrader(IClientTrader):
 
     @perf_clock
     def is_exist_pop_dialog(self):
-        self.wait(0.2)  # wait pre_dialog disappear
+        self.wait(0.5)  # wait pre_dialog disappear
 
         # try:
         retry = 20
@@ -336,13 +336,13 @@ class ClientTrader(IClientTrader):
         self._app.kill()
 
     def _close_prompt_windows(self):
-        self.wait(0.2)
+        self.wait(0.5)
         for window in self._app.windows(class_name="#32770", visible_only=True):
             title = window.window_text()
             if title != self._config.TITLE:
                 logging.info("close " + title)
                 window.close()
-                self.wait(0.2)
+                self.wait(0.5)
 
     def close_pormpt_window_no_wait(self):
         for window in self._app.windows(class_name="#32770"):
