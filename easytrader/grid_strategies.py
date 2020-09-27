@@ -191,6 +191,7 @@ class Xls(BaseStrategy):
         self._trader.wait(0.1)
         self._trader.app.top_window().type_keys("%{s}%{y}", set_foreground=False)
         # Wait until file save complete otherwise pandas can not find file
+        self._trader.app.top_window()['保存(&S)'].wait_not('ready', 5)
         self._trader.wait(0.2)
         # if self._trader.is_exist_pop_dialog():
         #     self._trader.app.top_window().Button2.click()
