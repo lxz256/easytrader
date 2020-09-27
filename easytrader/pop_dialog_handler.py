@@ -119,10 +119,10 @@ class TradePopDialogHandler(PopDialogHandler):
             self._app.top_window()['基金信息披露Shell DocObject View'].click()
             time.sleep(0.2)
             self._app.top_window().type_keys('{TAB}')
-            time.sleep(0.2)
+            time.sleep(0.5)
             self._app.top_window().type_keys("{ENTER}")
 
-            retry = 20
+            retry = 10
             while retry:
                 try:
                     self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=0.5,
