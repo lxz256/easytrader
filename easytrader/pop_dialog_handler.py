@@ -46,11 +46,11 @@ class PopDialogHandler:
     def _extract_entrust_id(self, content):
         return re.search(r"\d+", content).group()
 
+    def _select_checkbox(self):
+        self._app.top_window().child_window(control_id=1504, class_name='Button').click()
+
     def _submit_by_click(self):
-        self._set_foreground(self._app.top_window())
-        # 复选框
-        if self._app.top_window().child_window(control_id=1504, class_name='Button').exists():
-            self._app.top_window().child_window(control_id=1504, class_name='Button').click()
+        # self._set_foreground(self._app.top_window())
 
         if self._app.top_window()['是(&Y)'].exists():
             self._app.top_window()['是(&Y)'].click()
@@ -70,12 +70,14 @@ class PopDialogHandler:
 class TradePopDialogHandler(PopDialogHandler):
     @perf_clock
     def handle(self, title) -> Optional[dict]:
+        content = self._extract_content()
+        logger.debug('handling title:%s content:%s' % title, content)
+
         if title == "委托确认":
             self._submit_by_shortcut()
             return None
 
         if title == "提示信息":
-            content = self._extract_content()
             if "超出涨跌停" in content:
                 self._submit_by_shortcut()
                 time.sleep(0.5)
@@ -94,7 +96,7 @@ class TradePopDialogHandler(PopDialogHandler):
                 self._submit_by_shortcut()
                 return None
 
-            # 银河申购第一个窗口提示信息的Static取不到值，暂时处理如下
+            # 银河申购第1个窗口提示信息的Static取不到值（win10和server分别取到如下），暂时处理如下
             if "提示信息" in content or content == '':
                 self._submit_by_click()
                 return None
@@ -102,31 +104,42 @@ class TradePopDialogHandler(PopDialogHandler):
             return None
 
         if title == "提示":
-            content = self._extract_content()
+            self._submit_by_click()
             if "成功" in content:
                 entrust_no = self._extract_entrust_id(content)
-                self._submit_by_click()
                 return {"entrust_no": entrust_no}
-
-            self._submit_by_click()
-            time.sleep(0.5)
-            raise exceptions.TradeError(content)
+            else:
+                raise exceptions.TradeError(content)
 
         # 银河基金信息披露和风险确认
         if title == "基金信息披露":
             self._app.top_window()['基金信息披露Shell DocObject View'].click()
-            time.sleep(0.1)
+            time.sleep(0.2)
             self._app.top_window().type_keys('{TAB}')
-            time.sleep(0.1)
-            self._app.top_window().type_keys('{TAB}')
-            time.sleep(0.1)
+            time.sleep(0.5)
             self._app.top_window().type_keys("{ENTER}")
+
+            retry = 10
+            while retry:
+                try:
+                    self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=0.5,
+                                                                                                   retry_interval=0.2)  # 保存
+                    break
+                except RuntimeError:
+                    retry -= 1
+                    logger.info('con not find save button, retry%s ' % (20 - retry))
+
+            self._app.top_window().type_keys("{ESC}")
+            time.sleep(0.5)
+            self._select_checkbox()
             time.sleep(0.1)
             self._submit_by_click()
             return None
 
         # 银河风险告知
         if title == "公募证券投资基金投资风险告知":
+            self._select_checkbox()
+            time.sleep(0.1)
             self._submit_by_click()
             return None
         # 银河适当性匹配
@@ -134,5 +147,4 @@ class TradePopDialogHandler(PopDialogHandler):
             self._submit_by_click()
             return None
 
-        self._close()
-        return None
+        raise exceptions.TradeError('未知window, title:%s content:%s' % title, content)
