@@ -117,13 +117,23 @@ class TradePopDialogHandler(PopDialogHandler):
         # 银河基金信息披露和风险确认
         if title == "基金信息披露":
             self._app.top_window()['基金信息披露Shell DocObject View'].click()
-            time.sleep(0.1)
+            time.sleep(0.2)
             self._app.top_window().type_keys('{TAB}')
-            time.sleep(0.1)
-            self._app.top_window().type_keys('{TAB}')
-            time.sleep(0.1)
+            time.sleep(0.2)
             self._app.top_window().type_keys("{ENTER}")
-            time.sleep(0.1)
+
+            retry = 20
+            while retry:
+                try:
+                    self._app.top_window().child_window(control_id=4427, class_name='Button').wait("ready", timeout=0.5,
+                                                                                                   retry_interval=0.2)  # 保存
+                    break
+                except RuntimeError:
+                    retry -= 1
+                    logger.info('con not find save button, retry%s ' % (20 - retry))
+
+            self._app.top_window().type_keys("{ESC}")
+            time.sleep(0.5)
             self._select_checkbox()
             time.sleep(0.1)
             self._submit_by_click()
