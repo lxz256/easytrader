@@ -70,14 +70,14 @@ class PopDialogHandler:
 class TradePopDialogHandler(PopDialogHandler):
     @perf_clock
     def handle(self, title) -> Optional[dict]:
+        content = self._extract_content()
+        logger.debug('handling title:%s content:%s' % title, content)
+
         if title == "委托确认":
             self._submit_by_shortcut()
             return None
 
         if title == "提示信息":
-            content = self._extract_content()
-            logger.debug('content:%s' % content)
-
             if "超出涨跌停" in content:
                 self._submit_by_shortcut()
                 time.sleep(0.5)
@@ -96,7 +96,7 @@ class TradePopDialogHandler(PopDialogHandler):
                 self._submit_by_shortcut()
                 return None
 
-            # 银河申购第一个窗口提示信息的Static取不到值，暂时处理如下
+            # 银河申购第1个窗口提示信息的Static取不到值（win10和server分别取到如下），暂时处理如下
             if "提示信息" in content or content == '':
                 self._submit_by_click()
                 return None
@@ -104,15 +104,12 @@ class TradePopDialogHandler(PopDialogHandler):
             return None
 
         if title == "提示":
-            content = self._extract_content()
+            self._submit_by_click()
             if "成功" in content:
                 entrust_no = self._extract_entrust_id(content)
-                self._submit_by_click()
                 return {"entrust_no": entrust_no}
-
-            self._submit_by_click()
-            time.sleep(0.5)
-            raise exceptions.TradeError(content)
+            else:
+                raise exceptions.TradeError(content)
 
         # 银河基金信息披露和风险确认
         if title == "基金信息披露":
@@ -150,5 +147,4 @@ class TradePopDialogHandler(PopDialogHandler):
             self._submit_by_click()
             return None
 
-        self._close()
-        return None
+        raise exceptions.TradeError('未知window, title:%s content:%s' % title, content)
