@@ -11,6 +11,7 @@ import pywinauto
 import pywinauto.clipboard
 from pywinauto import win32defines
 
+from easytrader.exceptions import TradeError
 from easytrader.log import logger
 from easytrader.utils.captcha import captcha_recognize
 from easytrader.utils.win_gui import SetForegroundWindow, ShowWindow
@@ -179,13 +180,9 @@ class Xls(BaseStrategy):
         # ctrl+s 保存 grid 内容为 xls 文件
         self._set_foreground(grid)  # setFocus buggy, instead of SetForegroundWindow
         grid.type_keys("^s", set_foreground=False)
-        count = 30
-        while count > 0:
-            if self._trader.is_exist_pop_dialog():
-                break
-            self._trader.wait(0.2)
-            count -= 1
 
+        if not self._trader.is_exist_pop_dialog():
+            raise TradeError('save window is not exists')
         temp_path = tempfile.mktemp(suffix=".xls", dir=self.tmp_folder)
         self._set_foreground(self._trader.app.top_window())
 
@@ -195,9 +192,9 @@ class Xls(BaseStrategy):
         self._trader.app.top_window().type_keys("%{s}%{y}", set_foreground=False)
         # Wait until file save complete otherwise pandas can not find file
         self._trader.wait(0.2)
-        if self._trader.is_exist_pop_dialog():
-            self._trader.app.top_window().Button2.click()
-            self._trader.wait(0.2)
+        # if self._trader.is_exist_pop_dialog():
+        #     self._trader.app.top_window().Button2.click()
+        #     self._trader.wait(0.2)
 
         return self._format_grid_data(temp_path)
 
