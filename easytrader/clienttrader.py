@@ -305,7 +305,7 @@ class ClientTrader(IClientTrader):
 
     @perf_clock
     def is_exist_pop_dialog(self):
-        self.wait(0.5)  # wait pre_dialog disappear
+        self.wait(0.2)  # wait pre_dialog disappear
 
         # try:
         retry = 20
