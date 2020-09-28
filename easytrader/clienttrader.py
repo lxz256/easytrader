@@ -305,9 +305,10 @@ class ClientTrader(IClientTrader):
 
     @perf_clock
     def is_exist_pop_dialog(self):
-        self.wait(0.1)  # wait pre_dialog disappear
+        self.wait(0.1)  # wait pre_pop_dialog disappear
         try:
             self._app.window(class_name="#32770", visible_only=True, enabled_only=True).wait('ready', timeout=10)
+            self.wait(0.2)  # wait pop_dialog loaded completely
             return True
         except timings.TimeoutError:
             logger.debug('check pop_dialog timeout')
