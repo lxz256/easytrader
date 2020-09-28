@@ -129,6 +129,7 @@ class TradePopDialogHandler(PopDialogHandler):
                     retry -= 1
                     logger.info('con not find save button, retry%s ' % (10 - retry))
 
+            time.sleep(0.2)
             self._app.top_window().type_keys("{ESC}")
             self._app.top_window()['保存(&S)'].wait_not('ready', 5)
 
