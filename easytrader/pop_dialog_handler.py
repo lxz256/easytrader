@@ -117,7 +117,7 @@ class TradePopDialogHandler(PopDialogHandler):
             self._app.top_window().type_keys('{TAB}')
             self._app.top_window().type_keys('{TAB}')
             self._app.top_window().type_keys("{ENTER}")
-            # self._app.top_window().child_window(control_id=1504, class_name='Button').wait('ready', timeout=10)
+            self._app.top_window().child_window(control_id=1504, class_name='Button').wait('ready', timeout=10)
 
             # retry = 10
             # while retry:

@@ -305,15 +305,22 @@ class ClientTrader(IClientTrader):
 
     @perf_clock
     def is_exist_pop_dialog(self):
-        self.wait(0.2)  # wait pre_dialog disappear
+        self.wait(0.1)  # wait pre_dialog disappear
+        try:
+            self._app.window(class_name="#32770", visible_only=True, enabled_only=True).wait('ready', timeout=1)
+            return True
+        except timings.TimeoutError:
+            logger.debug('check pop_dialog timeout')
+            return False
 
         # try:
-        retry = 20
-        while retry and not len(self._app.windows(class_name="#32770", visible_only=True)):
-            retry -= 1
-            self.wait(0.5)
-            logging.info('wait for pop_dialog, retrying...')
-        return True if retry else False
+        # retry = 20
+        # while retry and not len():
+        #     retry -= 1
+        #     self.wait(0.5)
+        #     logging.info('wait for pop_dialog, retrying...')
+        # self.wait(0.2)  # wait pop_dialog loaded
+
         # logger.info('self._main.wrapper_object()=%s self._app.top_window().wrapper_object()=%s' % (self._main.wrapper_object(), self._app.top_window().wrapper_object()))
         #     return (
         #         self._main.wrapper_object() != self._app.top_window().wrapper_object()
