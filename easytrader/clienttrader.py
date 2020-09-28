@@ -313,6 +313,7 @@ class ClientTrader(IClientTrader):
             retry -= 1
             self.wait(0.5)
             logging.info('wait for pop_dialog, retrying...')
+        logging.info('pop_dialog exists, title:%s' % self._get_pop_dialog_title())
         return True if retry else False
         # logger.info('self._main.wrapper_object()=%s self._app.top_window().wrapper_object()=%s' % (self._main.wrapper_object(), self._app.top_window().wrapper_object()))
         #     return (
