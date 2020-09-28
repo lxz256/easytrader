@@ -111,8 +111,8 @@ class TradePopDialogHandler(PopDialogHandler):
             else:
                 raise exceptions.TradeError(content)
 
-        # 银河基金信息披露和风险确认
-        if title == "基金信息披露":
+        # 银河基金信息披露（银河title偶尔取不到值，暂时处理如下）
+        if title == "基金信息披露" or content == '基金信息披露':
             self._app.top_window()['基金信息披露Shell DocObject View'].click()
             self._app.top_window().type_keys('{TAB}')
             self._app.top_window().type_keys('{TAB}')
