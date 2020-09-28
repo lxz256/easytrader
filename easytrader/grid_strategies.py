@@ -187,6 +187,7 @@ class Xls(BaseStrategy):
         self._set_foreground(self._trader.app.top_window())
 
         # alt+s保存，alt+y替换已存在的文件
+        self._trader.wait(0.1)
         self._trader.app.top_window().Edit1.set_edit_text(temp_path)
         self._trader.wait(0.1)
         self._trader.app.top_window().type_keys("%{s}%{y}", set_foreground=False)
