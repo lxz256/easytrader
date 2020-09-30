@@ -73,7 +73,6 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
             self._app = pywinauto.Application().connect(
                 path=self._run_exe_path(exe_path), timeout=10
             )
-        self._close_prompt_windows()
         self._main = self._app.window(title="网上股票交易系统5.0")
         try:
             self._main.child_window(
@@ -83,6 +82,7 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
         except Exception:
             self.wait(2)
             self._switch_window_to_normal_mode()
+        self._close_prompt_windows()
 
     def _switch_window_to_normal_mode(self):
         self._app.top_window().child_window(
