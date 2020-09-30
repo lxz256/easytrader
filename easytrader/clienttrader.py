@@ -315,15 +315,6 @@ class ClientTrader(IClientTrader):
             logger.debug('check pop_dialog timeout')
             return False
 
-        # try:
-        # retry = 20
-        # while retry and not len():
-        #     retry -= 1
-        #     self.wait(0.5)
-        #     logging.info('wait for pop_dialog, retrying...')
-        # self.wait(0.2)  # wait pop_dialog loaded
-
-        # logger.info('self._main.wrapper_object()=%s self._app.top_window().wrapper_object()=%s' % (self._main.wrapper_object(), self._app.top_window().wrapper_object()))
         #     return (
         #         self._main.wrapper_object() != self._app.top_window().wrapper_object()
         #     )
