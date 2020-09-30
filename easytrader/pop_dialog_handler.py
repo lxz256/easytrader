@@ -5,8 +5,8 @@ from typing import Optional
 
 import pywinauto
 
-from easytrader import exceptions
 from easytrader import logger
+from easytrader.exceptions import PopDialogHandleError, TradeError
 from easytrader.utils.perf import perf_clock
 from easytrader.utils.win_gui import SetForegroundWindow, ShowWindow
 
@@ -109,7 +109,7 @@ class TradePopDialogHandler(PopDialogHandler):
                 entrust_no = self._extract_entrust_id(content)
                 return {"entrust_no": entrust_no}
             else:
-                raise exceptions.TradeError(content)
+                raise TradeError(content)
 
         # 银河基金信息披露（银河title偶尔取不到值，暂时处理如下）
         if title == "基金信息披露" or content == '基金信息披露':
@@ -149,4 +149,4 @@ class TradePopDialogHandler(PopDialogHandler):
             self._submit_by_click()
             return None
 
-        raise exceptions.TradeError('未知window, title:%s content:%s' % (title, content))
+        raise PopDialogHandleError('Unknown window-title:%s,content:%s please add handler' % (title, content))

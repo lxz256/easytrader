@@ -13,6 +13,7 @@ from pywinauto import findwindows, timings
 
 from easytrader import grid_strategies, pop_dialog_handler
 from easytrader.config import client
+from easytrader.exceptions import PopDialogHandleError
 from easytrader.grid_strategies import IGridStrategy
 from easytrader.log import logger
 from easytrader.utils.misc import file2dict
@@ -500,12 +501,12 @@ class ClientTrader(IClientTrader):
             try:
                 title = self._get_pop_dialog_title()
             except pywinauto.findwindows.ElementNotFoundError:
-                return {"message": 'top_window：%s，存在pop_dialog但找不到pop_dialog_title' % self._app.top_window}
+                raise PopDialogHandleError('ElementNotFoundError occurred when execute _get_pop_dialog_title')
 
             result = handler.handle(title)
             if result:
                 return result
-        return {"message": "top_window：%s，不存在pop_dialog" % self._app.top_window}
+        raise PopDialogHandleError('There is no pop_dialog to handle yet')
 
 
 class BaseLoginClientTrader(ClientTrader):
