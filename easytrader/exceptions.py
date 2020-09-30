@@ -5,6 +5,10 @@ class TradeError(IOError):
     pass
 
 
+class PopDialogHandleError(Exception):
+    pass
+
+
 class NotLoginError(Exception):
     def __init__(self, result=None):
         super(NotLoginError, self).__init__()
