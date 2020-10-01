@@ -119,14 +119,14 @@ class TradePopDialogHandler(PopDialogHandler):
             self._app.top_window().type_keys("{ENTER}")
             self._app.top_window().child_window(control_id=1504, class_name='Button').wait('ready', timeout=10)
             self._select_checkbox()
-            time.sleep(0.1)
+            # time.sleep(0.1)
             self._submit_by_click()
             return None
 
         # 银河风险告知
         if title == "公募证券投资基金投资风险告知":
             self._select_checkbox()
-            time.sleep(0.1)
+            # time.sleep(0.1)
             self._submit_by_click()
             return None
         # 银河适当性匹配
