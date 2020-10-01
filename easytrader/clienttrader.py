@@ -218,7 +218,7 @@ class ClientTrader(IClientTrader):
         :param limit_price: 科创板 限价
         :return: {'entrust_no': '委托单号'}
         """
-        self._switch_left_menus(["市价委托", "卖出"])
+        self._switch_left_menus(["市价委托", "卖出"], sleep=0.1)
 
         return self.market_trade(security, amount, ttype, limit_price=limit_price)
 
@@ -404,7 +404,7 @@ class ClientTrader(IClientTrader):
         self._type_edit_control_keys(
             self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount))
         )
-        self.wait(0.1)
+        # self.wait(0.1)
         price_control = None
         if str(security).startswith("68"):  # 科创板存在限价
             try:
