@@ -36,7 +36,7 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
         """
         try:
             self._app = pywinauto.Application().connect(
-                path=self._run_exe_path(exe_path), timeout=1
+                path=self._run_exe_path(exe_path)
             )
         # pylint: disable=broad-except
         except Exception:
@@ -77,10 +77,9 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
         try:
             self._main.child_window(
                 control_id=129, class_name="SysTreeView32"
-            ).wait("ready", 2)
+            ).wait("ready", 10)
         # pylint: disable=broad-except
         except Exception:
-            self.wait(2)
             self._switch_window_to_normal_mode()
         self._close_prompt_windows()
 
