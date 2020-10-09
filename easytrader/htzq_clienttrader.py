@@ -56,6 +56,8 @@ class HTZQClientTrader(clienttrader.BaseLoginClientTrader):
             self._app = pywinauto.Application().connect(
                 path=self._run_exe_path(exe_path), timeout=10
             )
-        self._close_prompt_windows()
         self._main = self._app.window(title="网上股票交易系统5.0")
-
+        self._main.child_window(
+            control_id=129, class_name="SysTreeView32"
+        ).wait("ready", 10)
+        self._close_prompt_windows()
