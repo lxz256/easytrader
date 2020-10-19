@@ -235,6 +235,9 @@ class ClientTrader(IClientTrader):
         """
         code = security[-6:]
         self._type_edit_control_keys(self._config.TRADE_SECURITY_CONTROL_ID, code)
+        if self.is_exist_pop_dialog(timeout=0.2):
+            self._app.top_window().child_window(title_re='.*深圳.*', class_name="Button").click()
+
         if ttype is not None:
             retry = 0
             retry_max = 10
@@ -305,10 +308,10 @@ class ClientTrader(IClientTrader):
         ).click(coords=(x, y))
 
     @perf_clock
-    def is_exist_pop_dialog(self):
+    def is_exist_pop_dialog(self, timeout=15.0):
         # self.wait(0.1)  # wait pre_pop_dialog disappear
         try:
-            self._app.window(class_name="#32770", visible_only=True, enabled_only=True).wait('ready', timeout=15)
+            self._app.window(class_name="#32770", visible_only=True, enabled_only=True).wait('ready', timeout=timeout)
             # self.wait(0.2)  # wait pop_dialog loaded completely
             return True
         except timings.TimeoutError:
@@ -388,9 +391,11 @@ class ClientTrader(IClientTrader):
         code = security[-6:]
 
         self._type_edit_control_keys(self._config.TRADE_SECURITY_CONTROL_ID, code)
+        if self.is_exist_pop_dialog(timeout=0.2):
+            self._app.top_window().child_window(title_re='.*深圳.*', class_name="Button").click()
 
         # wait security input finish
-        self.wait(0.1)
+        # self.wait(0.1)
 
         self._type_edit_control_keys(
             self._config.TRADE_PRICE_CONTROL_ID,
