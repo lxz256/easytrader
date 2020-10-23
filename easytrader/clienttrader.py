@@ -237,6 +237,7 @@ class ClientTrader(IClientTrader):
         self._type_edit_control_keys(self._config.TRADE_SECURITY_CONTROL_ID, code)
         if self.is_exist_pop_dialog(timeout=0.2):
             self._app.top_window().child_window(title_re='.*深圳.*', class_name="Button").click()
+        self.wait(0.1)
 
         if ttype is not None:
             retry = 0
@@ -395,7 +396,7 @@ class ClientTrader(IClientTrader):
             self._app.top_window().child_window(title_re='.*深圳.*', class_name="Button").click()
 
         # wait security input finish
-        # self.wait(0.1)
+        self.wait(0.1)
 
         self._type_edit_control_keys(
             self._config.TRADE_PRICE_CONTROL_ID,
