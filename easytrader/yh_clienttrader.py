@@ -64,23 +64,27 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
                 # detect login is success or not
                 try:
                     self._app.top_window().wait_not("exists visible", 10)
-                    break
+                    # break
                 # pylint: disable=broad-except
                 except Exception:
                     if is_xiadan:
                         self._app.top_window()["确定"].click()
+                    continue
 
-            self._app = pywinauto.Application().connect(
-                path=self._run_exe_path(exe_path), timeout=10
-            )
-        self._main = self._app.window(title="网上股票交易系统5.0")
-        try:
-            self._main.child_window(
-                control_id=129, class_name="SysTreeView32"
-            ).wait("ready", 10)
-        # pylint: disable=broad-except
-        except Exception:
-            self._switch_window_to_normal_mode()
+                self._app = pywinauto.Application().connect(
+                    path=self._run_exe_path(exe_path), timeout=10
+                )
+                self._main = self._app.window(title="网上股票交易系统5.0")
+                try:
+                    self._main.child_window(
+                        control_id=129, class_name="SysTreeView32"
+                    ).wait("ready", 10)
+                    break
+                # pylint: disable=broad-except
+                except Exception:
+                    self._app.top_window()["确定"].click()
+                    self.wait(60*5)
+                    continue
         self._close_prompt_windows()
 
     def _switch_window_to_normal_mode(self):
