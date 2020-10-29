@@ -313,7 +313,7 @@ class ClientTrader(IClientTrader):
         # self.wait(0.1)  # wait pre_pop_dialog disappear
         try:
             self._app.window(class_name="#32770", visible_only=True, enabled_only=True).wait('ready', timeout=timeout)
-            # self.wait(0.2)  # wait pop_dialog loaded completely
+            self.wait(0.1)  # wait pop_dialog loaded completely
             return True
         except timings.TimeoutError:
             logger.debug('check pop_dialog timeout')
