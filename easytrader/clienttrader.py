@@ -435,6 +435,7 @@ class ClientTrader(IClientTrader):
         control.type_keys(text, set_foreground=False)
 
     def _type_edit_control_keys(self, control_id, text):
+        self._main.child_window(control_id=control_id, class_name="Edit").wait('ready', 15)
         if not self._editor_need_type_keys:
             self._main.child_window(
                 control_id=control_id, class_name="Edit"
