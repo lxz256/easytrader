@@ -475,6 +475,7 @@ class ClientTrader(IClientTrader):
             except Exception as ex:
                 logger.exception("error occurred when trying to get left menus")
             count = count - 1
+            self.wait(0.5)
 
     def _cancel_entrust_by_double_click(self, row):
         x = self._config.CANCEL_ENTRUST_GRID_LEFT_MARGIN
