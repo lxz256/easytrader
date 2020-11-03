@@ -50,9 +50,8 @@ class BaseStrategy(IGridStrategy):
         pass
 
     def _get_grid(self, control_id: int):
-        grid = self._trader.main.child_window(
-            control_id=control_id, class_name="CVirtualGridCtrl"
-        )
+        self._trader.main.child_window(control_id=control_id, class_name="CVirtualGridCtrl").wait('ready', 15)
+        grid = self._trader.main.child_window(control_id=control_id, class_name="CVirtualGridCtrl")
         return grid
 
     def _set_foreground(self, grid=None):
