@@ -140,7 +140,7 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
         :param amount: 申购金额
         :return: {'entrust_no': '委托单号'}
         """
-        self._switch_left_menus(["场内基金", "基金申购"], sleep=0.1)
+        self._switch_left_menus(["场内基金", "基金申购"], sleep=0.2)
 
         self._type_edit_control_keys(self._config.TRADE_SECURITY_CONTROL_ID, security)
         self._type_edit_control_keys(self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount)))
