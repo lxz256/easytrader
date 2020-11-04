@@ -50,7 +50,7 @@ class PopDialogHandler:
         self._app.top_window().child_window(control_id=1504, class_name='Button').click()
 
     def _submit_by_click(self):
-        # self._set_foreground(self._app.top_window())
+        self._set_foreground(self._app.top_window())
 
         if self._app.top_window()['是(&Y)'].exists():
             self._app.top_window()['是(&Y)'].click()
