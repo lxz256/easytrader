@@ -42,33 +42,23 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
         except Exception:
             self._app = pywinauto.Application().start(exe_path)
             is_xiadan = True if "xiadan.exe" in exe_path else False
-            # wait login window ready
-            while True:
-                try:
-                    self._app.top_window().Edit1.wait("ready")
-                    break
-                except RuntimeError:
-                    pass
 
+            # wait login window ready
+            self._app.top_window().Edit1.wait("ready", 100)
             self._app.top_window().Edit1.type_keys(user)
             self._app.top_window().Edit2.type_keys(password)
             while True:
                 self._app.top_window().Edit3.type_keys(
                     self._handle_verify_code(is_xiadan)
                 )
-                if is_xiadan:
-                    self._app.top_window().Button0.click()
-                else:
-                    self._app.top_window()["委托登录"].click()
+                self._app.top_window()["委托登录"].click()
 
                 # detect login is success or not
                 try:
                     self._app.top_window().wait_not("exists visible", 10)
                     # break
-                # pylint: disable=broad-except
                 except Exception:
-                    if is_xiadan:
-                        self._app.top_window()["确定"].click()
+                    self._app.top_window()["确定"].click()  # 验证码
                     continue
 
                 self._app = pywinauto.Application().connect(
@@ -78,11 +68,11 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
                 try:
                     self._main.child_window(
                         control_id=129, class_name="SysTreeView32"
-                    ).wait("ready", 10)
+                    ).wait("ready", 30)
                     break
                 # pylint: disable=broad-except
                 except Exception:
-                    self._app.top_window()["确定"].click()
+                    self._app.top_window()["确定"].click()  # 柜台无响应
                     self.wait(60*5)
                     continue
         self._close_prompt_windows()
