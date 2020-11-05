@@ -426,6 +426,7 @@ class ClientTrader(IClientTrader):
         return self.grid_strategy_instance.get(control_id)
 
     def _type_keys(self, control_id, text):
+        self._main.child_window(control_id=control_id, class_name="Edit").wait('ready', 15)
         self._main.child_window(control_id=control_id, class_name="Edit").set_edit_text(
             text
         )
