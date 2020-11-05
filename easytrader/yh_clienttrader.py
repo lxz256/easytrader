@@ -51,7 +51,7 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
                 self._app.top_window().Edit3.type_keys(
                     self._handle_verify_code(is_xiadan)
                 )
-                self._app.top_window()["委托登录"].click()
+                self._app.top_window().Button0.click()
 
                 # detect login is success or not
                 try:
