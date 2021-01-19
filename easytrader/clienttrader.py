@@ -251,6 +251,10 @@ class ClientTrader(IClientTrader):
                     retry += 1
                     self.wait(0.1)
         self._set_market_trade_params(security, amount, limit_price=limit_price)
+
+        while self._app.top_window().Static16.window_text() == '-':
+            self.wait(0.1)
+
         self._submit_trade()
 
         return self._handle_pop_dialogs(
@@ -398,7 +402,9 @@ class ClientTrader(IClientTrader):
             self._app.top_window().child_window(title_re='.*深圳.*', class_name="Button").click()
 
         # wait security input finish
-        self.wait(0.1)
+        while self._app.top_window().Static16.window_text() == '-':
+            self.wait(0.1)
+        # self.wait(0.1)
 
         self._type_edit_control_keys(
             self._config.TRADE_PRICE_CONTROL_ID,
@@ -412,7 +418,7 @@ class ClientTrader(IClientTrader):
         self._type_edit_control_keys(
             self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount))
         )
-        self.wait(0.1)
+        # self.wait(0.1)
         price_control = None
         if str(security).startswith("68"):  # 科创板存在限价
             try:
