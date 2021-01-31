@@ -235,7 +235,8 @@ class ClientTrader(IClientTrader):
         """
         code = security[-6:]
         self._type_edit_control_keys(self._config.TRADE_SECURITY_CONTROL_ID, code)
-        if self.is_exist_pop_dialog(timeout=0.2):
+        if code in self._config.MULTI_MARKET_SECURITY_LIST:
+            self.is_exist_pop_dialog()
             self._app.top_window().child_window(title_re='.*深圳.*', class_name="Button").click()
         self.wait(0.1)
 
@@ -250,6 +251,10 @@ class ClientTrader(IClientTrader):
                     retry += 1
                     self.wait(0.1)
         self._set_market_trade_params(security, amount, limit_price=limit_price)
+
+        while self._app.top_window().Static16.window_text() == '-':
+            self.wait(0.1)
+
         self._submit_trade()
 
         return self._handle_pop_dialogs(
@@ -392,10 +397,13 @@ class ClientTrader(IClientTrader):
         code = security[-6:]
 
         self._type_edit_control_keys(self._config.TRADE_SECURITY_CONTROL_ID, code)
-        if self.is_exist_pop_dialog(timeout=0.2):
+        if code in self._config.MULTI_MARKET_SECURITY_LIST:
+            self.is_exist_pop_dialog()
             self._app.top_window().child_window(title_re='.*深圳.*', class_name="Button").click()
 
         # wait security input finish
+        # while self._app.top_window().Static16.window_text() == '-':
+        #     self.wait(0.1)
         self.wait(0.1)
 
         self._type_edit_control_keys(
