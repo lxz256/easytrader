@@ -38,6 +38,8 @@ class YHClientTrader(clienttrader.BaseLoginClientTrader):
             self._app = pywinauto.Application().connect(
                 path=self._run_exe_path(exe_path)
             )
+            self._main = self._app.window(title="网上股票交易系统5.0")
+
         # pylint: disable=broad-except
         except Exception:
             self._app = pywinauto.Application().start(exe_path)
