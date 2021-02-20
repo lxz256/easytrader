@@ -9,7 +9,8 @@ import time
 from typing import Type, Union
 
 import easyutils
-from pywinauto import findwindows, timings
+from pywinauto import timings
+from win32gui import SetForegroundWindow, ShowWindow
 
 from easytrader import grid_strategies, pop_dialog_handler
 from easytrader.config import client
@@ -18,7 +19,6 @@ from easytrader.grid_strategies import IGridStrategy
 from easytrader.log import logger
 from easytrader.utils.misc import file2dict
 from easytrader.utils.perf import perf_clock
-from win32gui import SetForegroundWindow, ShowWindow
 
 if not sys.platform.startswith("darwin"):
     import pywinauto
@@ -285,7 +285,8 @@ class ClientTrader(IClientTrader):
 
         if len(stock_list) == 0:
             return {"message": "今日无新股"}
-        invalid_list_idx = [i for i, v in enumerate(stock_list) if v[self.config.AUTO_IPO_NUMBER] <= 0 or (v["新股代码"]//1000 == 787 and not kcb_flag)]
+        invalid_list_idx = [i for i, v in enumerate(stock_list) if
+                            v[self.config.AUTO_IPO_NUMBER] <= 0 or (v["新股代码"] // 1000 == 787 and not kcb_flag)]
 
         if len(stock_list) == len(invalid_list_idx):
             return {"message": "没有发现可以申购的新股"}
@@ -305,8 +306,8 @@ class ClientTrader(IClientTrader):
     def _click_grid_by_row(self, row):
         x = self._config.COMMON_GRID_LEFT_MARGIN
         y = (
-            self._config.COMMON_GRID_FIRST_ROW_HEIGHT
-            + self._config.COMMON_GRID_ROW_HEIGHT * row
+                self._config.COMMON_GRID_FIRST_ROW_HEIGHT
+                + self._config.COMMON_GRID_ROW_HEIGHT * row
         )
         self._app.top_window().child_window(
             control_id=self._config.COMMON_GRID_CONTROL_ID,
@@ -334,6 +335,13 @@ class ClientTrader(IClientTrader):
         # ) as ex:
         #     logging.exception("check pop dialog timeout")
         #     return False
+
+    @perf_clock
+    def select_account_by_index(self, index=0):
+        selects = self._main.child_window(
+            control_id=self._config.ACCOUNT_CONTROL_ID, class_name="ComboBox"
+        )
+        selects.select(index)
 
     def _run_exe_path(self, exe_path):
         return os.path.join(os.path.dirname(exe_path), "xiadan.exe")
@@ -389,8 +397,8 @@ class ClientTrader(IClientTrader):
     def _get_pop_dialog_title(self):
         return (
             self._app.top_window()
-            .child_window(control_id=self._config.POP_DIALOD_TITLE_CONTROL_ID)
-            .window_text()
+                .child_window(control_id=self._config.POP_DIALOD_TITLE_CONTROL_ID)
+                .window_text()
         )
 
     def _set_trade_params(self, security, price, amount):
@@ -490,8 +498,8 @@ class ClientTrader(IClientTrader):
     def _cancel_entrust_by_double_click(self, row):
         x = self._config.CANCEL_ENTRUST_GRID_LEFT_MARGIN
         y = (
-            self._config.CANCEL_ENTRUST_GRID_FIRST_ROW_HEIGHT
-            + self._config.CANCEL_ENTRUST_GRID_ROW_HEIGHT * row
+                self._config.CANCEL_ENTRUST_GRID_FIRST_ROW_HEIGHT
+                + self._config.CANCEL_ENTRUST_GRID_ROW_HEIGHT * row
         )
         self._app.top_window().child_window(
             control_id=self._config.COMMON_GRID_CONTROL_ID,
@@ -524,13 +532,13 @@ class BaseLoginClientTrader(ClientTrader):
         pass
 
     def prepare(
-        self,
-        config_path=None,
-        user=None,
-        password=None,
-        exe_path=None,
-        comm_password=None,
-        **kwargs
+            self,
+            config_path=None,
+            user=None,
+            password=None,
+            exe_path=None,
+            comm_password=None,
+            **kwargs
     ):
         """
         登陆客户端
