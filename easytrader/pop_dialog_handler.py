@@ -92,7 +92,7 @@ class TradePopDialogHandler(PopDialogHandler):
                 self._submit_by_shortcut()
                 return None
 
-            if "基金申购委托" in content:
+            if "委托" in content:
                 self._submit_by_shortcut()
                 return None
 

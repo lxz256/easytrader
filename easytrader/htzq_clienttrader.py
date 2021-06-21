@@ -3,8 +3,7 @@
 import pywinauto
 import pywinauto.clipboard
 
-from easytrader import grid_strategies
-from . import clienttrader
+from easytrader import grid_strategies, clienttrader, pop_dialog_handler
 
 
 class HTZQClientTrader(clienttrader.BaseLoginClientTrader):
@@ -61,3 +60,13 @@ class HTZQClientTrader(clienttrader.BaseLoginClientTrader):
             control_id=129, class_name="SysTreeView32"
         ).wait("ready", 10)
         self._close_prompt_windows()
+
+    def sbjx_ipo(self, security, amount=100):
+        self._switch_left_menus(["中小企业股份转让", "公开发行", "公开发行申购"])
+        self._type_edit_control_keys(self._config.SBJX_SECURITY_CONTROL_ID, security)
+        self._type_edit_control_keys(self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount)))
+        self._submit_trade()
+
+        return self._handle_pop_dialogs(
+            handler_class=pop_dialog_handler.TradePopDialogHandler
+        )
