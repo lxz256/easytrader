@@ -62,7 +62,6 @@ class HTZQClientTrader(clienttrader.BaseLoginClientTrader):
         self._close_prompt_windows()
 
     def sbjx_ipo(self, security, amount=100):
-        self._switch_left_menus(["中小企业股份转让", "公开发行", "公开发行申购"])
         self._type_edit_control_keys(self._config.SBJX_SECURITY_CONTROL_ID, security)
         self._type_edit_control_keys(self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount)))
         self._submit_trade()
