@@ -1,6 +1,7 @@
 # coding:utf-8
 import re
 import time
+from datetime import datetime
 from typing import Optional
 
 import pywinauto
@@ -92,8 +93,16 @@ class TradePopDialogHandler(PopDialogHandler):
                 self._submit_by_shortcut()
                 return None
 
-            if "基金申购委托" or "公开发行申购委托" in content:
+            if "基金申购委托" in content:
                 self._submit_by_shortcut()
+                return None
+
+            if "公开发行申购委托" in content:
+                apply_time_int = 90000
+                while int(datetime.now().strftime('%H%M%S%f')) // 1000 < apply_time_int*1000:
+                    time.sleep(0.002)
+                self._submit_by_shortcut()
+                logger.info('三板精选点击确认申购时间%s' % time.time())
                 return None
 
             # 银河申购第1个窗口提示信息的Static取不到值（win10和server分别取到如下），暂时处理如下
