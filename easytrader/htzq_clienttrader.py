@@ -61,8 +61,9 @@ class HTZQClientTrader(clienttrader.BaseLoginClientTrader):
         ).wait("ready", 10)
         self._close_prompt_windows()
 
-    def sbjx_ipo(self, security, amount=100):
+    def sbjx_ipo(self, security, price, amount=100):
         self._type_edit_control_keys(self._config.SBJX_SECURITY_CONTROL_ID, security)
+        self._type_edit_control_keys(self._config.TRADE_PRICE_CONTROL_ID, price)
         self._type_edit_control_keys(self._config.TRADE_AMOUNT_CONTROL_ID, str(int(amount)))
         self._submit_trade()
 
